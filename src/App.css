@@ -9,9 +9,27 @@ body {
   padding: 1rem;
 }
 
+.App {
+  display: flex;
+}
+
+.card__container {
+  flex-basis: 70%;
+}
+
+.card__form {
+  flex-basis: 30%;
+}
+
 .card {
   box-shadow: 2px 8px 20px #dfdfdf;
   max-width: 350px;
   width: 100%;
   padding: 1rem;
+}
+
+.card__img {
+  max-width: 100%;
+  object-fit: cover;
+  display: block;
 }
