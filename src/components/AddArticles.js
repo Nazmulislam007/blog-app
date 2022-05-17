@@ -71,7 +71,7 @@ const AddArticles = () => {
   };
 
   return (
-    <form onSubmit={formSubmit}>
+    <form className="form" onSubmit={formSubmit}>
       <h2>Add articles form</h2>
       <input
         type="text"
