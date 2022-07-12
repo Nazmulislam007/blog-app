@@ -23,7 +23,9 @@ const AddArticles = () => {
       `images/${new Date().getTime()}-${image.name}`
     );
 
-    uploadBytesResumable(storageRef, image).on(
+    const uploadTask = uploadBytesResumable(storageRef, image);
+
+    uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progressPersentage =
@@ -39,9 +41,7 @@ const AddArticles = () => {
           description: "",
           image: "",
         });
-        getDownloadURL(
-          uploadBytesResumable(storageRef, image).snapshot.ref
-        ).then((url) => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           const articleRef = collection(db, "Articles");
           addDoc(articleRef, {
             title,
@@ -71,29 +71,31 @@ const AddArticles = () => {
   };
 
   return (
-    <form className="form" onSubmit={formSubmit}>
-      <h2>Add articles form</h2>
-      <input
-        type="text"
-        name="title"
-        placeholder="Title"
-        value={formData.title}
-        onChange={handleSubmit}
-      />
-      <textarea
-        name="description"
-        value={formData.description}
-        onChange={handleSubmit}
-      />
-      <input
-        type="file"
-        name="image"
-        accept="image/*"
-        onChange={handleImageSubmit}
-      />
-      <progress value={progress} max="100" />
-      <button type="submit">Submit</button>
-    </form>
+    <div className="card__form">
+      <form className="form" onSubmit={formSubmit}>
+        <h2>Add articles form</h2>
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          value={formData.title}
+          onChange={handleSubmit}
+        />
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleSubmit}
+        />
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={handleImageSubmit}
+        />
+        <progress value={progress} max="100" />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   );
 };
 

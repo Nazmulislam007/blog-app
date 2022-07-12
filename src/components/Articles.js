@@ -16,7 +16,7 @@ const Articles = () => {
 
   useEffect(() => {
     const articleRef = collection(db, "Articles");
-    const queryRef = query(articleRef, orderBy("createAt", "desc"));
+    const queryRef = query(articleRef, orderBy("createAt", "asc"));
 
     onSnapshot(queryRef, (snapshot) => {
       const article = snapshot.docs.map((doc) => ({
@@ -39,7 +39,7 @@ const Articles = () => {
     }
   };
   return (
-    <>
+    <div className="card__container">
       {articles.length === 0 ? (
         <p>No article founded</p>
       ) : (
@@ -48,7 +48,13 @@ const Articles = () => {
             <div className="card" key={id}>
               <h3 className="card__title">{title}</h3>
               <p className="card__des">{description}</p>
-              <img className="card__img" src={imageUrl} alt="firebase" />
+              <img
+                className="card__img"
+                width="400"
+                height="250"
+                src={imageUrl}
+                alt="firebase"
+              />
               <p className="card__create">{createAt.toDate().toDateString()}</p>
               <button onClick={() => deleteArticle({ id, imageUrl })}>
                 Delete
@@ -57,7 +63,7 @@ const Articles = () => {
           );
         })
       )}
-    </>
+    </div>
   );
 };
 

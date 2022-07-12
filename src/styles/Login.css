@@ -1,0 +1,9 @@
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+}
+
+form > * {
+  margin-bottom: 1rem;
+}
