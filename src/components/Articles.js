@@ -10,6 +10,7 @@ import {
 import { db, storage } from "../firebase/firebase";
 import { toast } from "react-toastify";
 import { deleteObject, ref } from "firebase/storage";
+import { Link } from "react-router-dom";
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
@@ -46,16 +47,20 @@ const Articles = () => {
         articles.map(({ title, id, description, createAt, imageUrl }) => {
           return (
             <div className="card" key={id}>
-              <h3 className="card__title">{title}</h3>
-              <p className="card__des">{description}</p>
-              <img
-                className="card__img"
-                width="400"
-                height="250"
-                src={imageUrl}
-                alt="firebase"
-              />
-              <p className="card__create">{createAt.toDate().toDateString()}</p>
+              <Link to={`/article/${id}`}>
+                <h3 className="card__title">{title}</h3>
+                <p className="card__des">{description}</p>
+                <img
+                  className="card__img"
+                  width="400"
+                  height="250"
+                  src={imageUrl}
+                  alt="firebase"
+                />
+                <p className="card__create">
+                  {createAt.toDate().toDateString()}
+                </p>
+              </Link>
               <button onClick={() => deleteArticle({ id, imageUrl })}>
                 Delete
               </button>

@@ -73,7 +73,7 @@ const Register = () => {
         required
         onChange={inputOnChange}
       />
-      <button>Submit</button>
+      <button disabled={loading ? true : false}>Submit</button>
       <button type="button" onClick={loginWithGoogle}>
         Login With Google
       </button>

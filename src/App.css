@@ -9,6 +9,11 @@ body {
   padding: 1rem;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .App {
   display: flex;
   align-items: flex-start;
@@ -72,6 +77,10 @@ nav {
 nav > div > * {
   display: inline-block;
   margin-left: 2rem;
+}
+
+progress {
+  transition: 0.5s ease;
 }
 
 @media screen and (max-width: 900px) {

@@ -3,6 +3,7 @@ import { db, storage } from "../firebase/firebase";
 import React, { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { toast } from "react-toastify";
+import { useAuth } from "../Context/AuthContextProvider";
 
 const AddArticles = () => {
   const [progress, setProgress] = useState(0);
@@ -12,6 +13,8 @@ const AddArticles = () => {
     image: "",
     createAt: Timestamp.now().toDate(),
   });
+
+  const { availableUser } = useAuth();
 
   const formSubmit = (e) => {
     e.preventDefault();
@@ -48,6 +51,10 @@ const AddArticles = () => {
             description,
             imageUrl: url,
             createAt: Timestamp.now().toDate(),
+            createdBy: availableUser.displayName,
+            userId: availableUser.uid,
+            likes: [],
+            comments: [],
           })
             .then(() => {
               toast("Article added successfull", { type: "success" });
