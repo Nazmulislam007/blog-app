@@ -11,6 +11,8 @@ import { db, storage } from "../firebase/firebase";
 import { toast } from "react-toastify";
 import { deleteObject, ref } from "firebase/storage";
 import { Link } from "react-router-dom";
+import Like from "./Like";
+import Comments from "./Comments";
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
@@ -44,29 +46,36 @@ const Articles = () => {
       {articles.length === 0 ? (
         <p>No article founded</p>
       ) : (
-        articles.map(({ title, id, description, createAt, imageUrl }) => {
-          return (
-            <div className="card" key={id}>
-              <Link to={`/article/${id}`}>
-                <h3 className="card__title">{title}</h3>
-                <p className="card__des">{description}</p>
-                <img
-                  className="card__img"
-                  width="400"
-                  height="250"
-                  src={imageUrl}
-                  alt="firebase"
-                />
-                <p className="card__create">
-                  {createAt.toDate().toDateString()}
-                </p>
-              </Link>
-              <button onClick={() => deleteArticle({ id, imageUrl })}>
-                Delete
-              </button>
-            </div>
-          );
-        })
+        articles.map(
+          ({ title, id, likes, description, createAt, imageUrl }) => {
+            return (
+              <div className="card" key={id}>
+                <Link to={`/article/${id}`}>
+                  <h3 className="card__title">{title}</h3>
+                  <p className="card__des">{description}</p>
+                  <img
+                    className="card__img w-full h-[250px]"
+                    src={imageUrl}
+                    alt="firebase"
+                  />
+                  <p className="card__create">
+                    {createAt.toDate().toDateString()}
+                  </p>
+                </Link>
+                <div className="flex items-center justify-between px-1">
+                  <Like id={id} likes={likes} />
+                  <Comments id={id} />
+                </div>
+                <button
+                  className="py-1 px-2 bg-red-500 text-white "
+                  onClick={() => deleteArticle({ id, imageUrl })}
+                >
+                  Delete
+                </button>
+              </div>
+            );
+          }
+        )
       )}
     </div>
   );

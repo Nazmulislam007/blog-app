@@ -7,6 +7,7 @@ import { useAuth } from "../Context/AuthContextProvider";
 
 const AddArticles = () => {
   const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -31,9 +32,11 @@ const AddArticles = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
+        setLoading(true);
         const progressPersentage =
           Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setProgress(progressPersentage);
+        setLoading(false);
       },
       (err) => {
         console.log(err);
@@ -86,21 +89,26 @@ const AddArticles = () => {
           name="title"
           placeholder="Title"
           value={formData.title}
+          className="bg-slate-300 outline-none"
           onChange={handleSubmit}
         />
         <textarea
           name="description"
           value={formData.description}
+          className="bg-slate-300 outline-none"
           onChange={handleSubmit}
         />
         <input
           type="file"
           name="image"
           accept="image/*"
+          className="bg-slate-300 outline-none"
           onChange={handleImageSubmit}
         />
-        <progress value={progress} max="100" />
-        <button type="submit">Submit</button>
+        {loading && <progress className="w-full" value={progress} max="100" />}
+        <button className="bg-green-600 text-white" type="submit">
+          Submit
+        </button>
       </form>
     </div>
   );

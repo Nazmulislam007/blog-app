@@ -4,7 +4,9 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import { db, storage } from "../firebase/firebase";
+import Like from "./Like";
 
 const Article = () => {
   let navigate = useNavigate();
@@ -33,22 +35,58 @@ const Article = () => {
   return (
     <div className="article__container">
       {article && (
-        <div className="card">
-          <h3 className="card__title">{article.title}</h3>
-          <p className="card__des">{article.description}</p>
-          <img
-            className="card__img"
-            width="400"
-            height="250"
-            src={article.imageUrl}
-            alt="firebase"
-          />
-          <p className="card__create">
-            {article?.createAt.toDate().toDateString()}
-          </p>
-          <button onClick={() => deleteArticle(article)}>Delete</button>
+        <div className="flex">
+          <div className="max-w-[350px]">
+            <img
+              className="card__img w-[400px] h-[250px]"
+              src={article.imageUrl}
+              alt="firebase"
+            />
+            <p className="card__create">
+              {article?.createAt.toDate().toDateString()}
+            </p>
+            <div className="w-full flex">
+              <Like id={id} likes={article.likes} />
+              <div className="ml-2">
+                <input
+                  type="text"
+                  className="w-full bg-gray-200 outline-none"
+                />
+                <button className="w-full bg-blue-500 mt-1 hover:bg-blue-600 text-white transition-colors">
+                  Comment
+                </button>
+              </div>
+            </div>
+            <div>
+              <div>
+                <small>author name</small>
+                <p>Others Comments</p>
+              </div>
+              <div className="text-right">
+                <small>my name</small>
+                <p>my Comments</p>
+              </div>
+            </div>
+            <button
+              className="bg-red-600 text-white w-full"
+              onClick={() => deleteArticle(article)}
+            >
+              Delete Post
+            </button>
+          </div>
+          <div className="w-1/2 ml-3 shadow-md p-4">
+            <h1 className="text-2xl">{article.title}</h1>
+            <p className="text-gray-500">{article.description}</p>
+          </div>
         </div>
       )}
+
+      <button
+        className="py-1 px-2 bg-red-500 text-white mt-2"
+        onClick={() => navigate(-1, { replace: true })}
+      >
+        Back
+      </button>
     </div>
   );
 };

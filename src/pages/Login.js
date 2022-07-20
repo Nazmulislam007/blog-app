@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContextProvider";
 import "../styles/Login.css";
 
@@ -10,6 +11,8 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const { googleSignIn, login } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -19,6 +22,7 @@ const Login = () => {
       setLoading(true);
       await login(email, password);
       setInputData({ email: "", password: "" });
+      navigate("/", { replace: true });
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -37,6 +41,7 @@ const Login = () => {
     try {
       setLoading(true);
       await googleSignIn();
+      navigate("/", { replace: true });
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -63,7 +68,9 @@ const Login = () => {
         required
         onChange={inputOnChange}
       />
+
       <button disabled={loading ? true : false}>Submit</button>
+
       <button type="button" onClick={loginWithGoogle}>
         Login With Google
       </button>

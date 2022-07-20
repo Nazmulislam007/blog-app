@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import { useAuth } from "../Context/AuthContextProvider";
 
@@ -11,6 +12,8 @@ const Register = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const { signup, googleSignIn } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -21,6 +24,7 @@ const Register = () => {
       await signup(username, email, password);
       alert("user created successfully");
       setInputData({ username: "", email: "", password: "" });
+      navigate("/", { replace: true });
       setLoading(false);
     } catch (error) {
       alert("register error alert");
@@ -39,6 +43,7 @@ const Register = () => {
     try {
       setLoading(true);
       await googleSignIn();
+      navigate("/", { replace: true });
       setLoading(false);
     } catch (error) {
       console.log(error);
