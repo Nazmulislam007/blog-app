@@ -36,12 +36,12 @@ const AddArticles = () => {
         const progressPersentage =
           Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setProgress(progressPersentage);
-        setLoading(false);
       },
       (err) => {
         console.log(err);
       },
       () => {
+        setLoading(false);
         setFormData({
           title: "",
           description: "",

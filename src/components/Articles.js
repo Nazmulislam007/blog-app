@@ -13,9 +13,11 @@ import { deleteObject, ref } from "firebase/storage";
 import { Link } from "react-router-dom";
 import Like from "./Like";
 import Comments from "./Comments";
+import { useAuth } from "../Context/AuthContextProvider";
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
+  const { availableUser } = useAuth();
 
   useEffect(() => {
     const articleRef = collection(db, "Articles");
@@ -31,14 +33,15 @@ const Articles = () => {
   }, []);
 
   const deleteArticle = async ({ id, imageUrl }) => {
-    try {
-      await deleteDoc(doc(db, "Articles", id));
-      toast("Article delete successfully", { type: "success" });
-
-      const storageRef = ref(storage, imageUrl);
-      await deleteObject(storageRef);
-    } catch (error) {
-      console.log(error);
+    if (window.confirm("sure?")) {
+      try {
+        await deleteDoc(doc(db, "Articles", id));
+        toast("Article delete successfully", { type: "success" });
+        const storageRef = ref(storage, imageUrl);
+        await deleteObject(storageRef);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   return (
@@ -47,7 +50,7 @@ const Articles = () => {
         <p>No article founded</p>
       ) : (
         articles.map(
-          ({ title, id, likes, description, createAt, imageUrl }) => {
+          ({ title, id, userId, likes, description, createAt, imageUrl }) => {
             return (
               <div className="card" key={id}>
                 <Link to={`/article/${id}`}>
@@ -66,12 +69,14 @@ const Articles = () => {
                   <Like id={id} likes={likes} />
                   <Comments id={id} />
                 </div>
-                <button
-                  className="py-1 px-2 bg-red-500 text-white "
-                  onClick={() => deleteArticle({ id, imageUrl })}
-                >
-                  Delete
-                </button>
+                {availableUser?.uid === userId && (
+                  <button
+                    className="py-1 px-2 bg-red-500 text-white "
+                    onClick={() => deleteArticle({ id, imageUrl })}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             );
           }
